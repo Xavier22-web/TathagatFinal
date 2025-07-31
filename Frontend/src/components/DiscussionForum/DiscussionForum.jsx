@@ -83,6 +83,7 @@ const DiscussionForum = () => {
 
   useEffect(() => {
     fetchDiscussions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   const handleVote = async (discussionId, voteType) => {
