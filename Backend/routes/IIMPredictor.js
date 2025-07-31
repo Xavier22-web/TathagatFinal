@@ -75,6 +75,15 @@ router.get("/iim-predictor/:userId", async (req, res) => {
             return res.status(400).json({ message: "❌ userId is missing in the request!" });
         }
 
+        // ✅ Validate ObjectId format
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            console.log('❌ Invalid ObjectId format:', userId);
+            return res.status(400).json({
+                success: false,
+                message: "❌ Invalid userId format!"
+            });
+        }
+
         // ✅ Find the user's submitted IIM predictor data
         const predictionData = await IIMPredictor.findOne({ userId });
 
