@@ -416,6 +416,8 @@ const bulkUploadRoute = require("./routes/bulkUpload");
 const zoomRoute = require("./routes/zoom");
 const discussionRoutes = require("./routes/DiscussionRoute");
 const adminDiscussionRoutes = require("./routes/AdminDiscussionRoute");
+const mockTestRoutes = require("./routes/MockTestRoute");
+const adminMockTestRoutes = require("./routes/AdminMockTestRoute");
 // const practiceTestRoutes = require("./routes/practiceTestRoutes");
 
 app.use("/api/auth/email", authEmailRoutes);
