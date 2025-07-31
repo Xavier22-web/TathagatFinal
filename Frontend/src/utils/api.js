@@ -8,8 +8,8 @@ const isLocalhost = typeof window !== 'undefined' &&
 
 // Use relative URLs for production deployments, localhost URL for local development
 const API_BASE_URL = isLocalhost
-  ? (process.env.REACT_APP_API_URL || 'http://localhost:5000')
-  : (process.env.REACT_APP_API_URL || 'http://localhost:5000'); // Use configured API URL even in production
+  ? (process.env.REACT_APP_API_URL || 'http://localhost:5001')
+  : ''; // Use relative URLs for production (proxy will handle backend)
 
 // Log the configuration for debugging
 console.log('API Configuration:', {
