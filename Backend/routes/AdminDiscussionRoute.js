@@ -9,7 +9,7 @@ const {
   deleteReply,
   getDiscussionStats
 } = require('../controllers/AdminDiscussionController');
-const authMiddleware = require('../middleware/authMiddleware');
+const { adminAuth } = require('../middleware/authMiddleware');
 
 // Admin routes for discussion moderation
 router.get('/discussions', authMiddleware, getAllDiscussions);
