@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { FaTachometerAlt, FaBookOpen, FaUsers, FaUserGraduate, FaChalkboardTeacher, FaUserCircle, FaSignOutAlt, FaClipboardList } from "react-icons/fa";
+import { FaTachometerAlt, FaBookOpen, FaUsers, FaUserGraduate, FaChalkboardTeacher, FaUserCircle, FaSignOutAlt, FaClipboardList, FaFileAlt } from "react-icons/fa";
 import logo from "../../../images/tgLOGO.png"
 import "./AdminSidebar.css";
 
@@ -26,6 +26,9 @@ const AdminSidebar = () => {
         </NavLink>
         <NavLink to="/admin/practice-tests" className="admin-link">
           <FaClipboardList className="admin-icon" /> Practice Tests
+        </NavLink>
+        <NavLink to="/admin/study-materials" className="admin-link">
+          <FaFileAlt className="admin-icon" /> Study Materials
         </NavLink>
         <NavLink to="/admin/all-users" className="admin-link">
           <FaUsers className="admin-icon" /> All Users
