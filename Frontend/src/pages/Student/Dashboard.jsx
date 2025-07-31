@@ -367,7 +367,7 @@ const loadMyCourses = async () => {
     if (activeSection === 'materials') {
       loadStudyMaterials();
     }
-  }, [materialFilters, activeSection]);
+  }, [materialFilters, activeSection]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const sidebarItems = [
     { id: 'dashboard', label: 'Dashboard', icon: FiHome },
