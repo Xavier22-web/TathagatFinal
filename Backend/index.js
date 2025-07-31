@@ -360,6 +360,10 @@ const addSampleAnnouncements = async () => {
 setTimeout(() => {
     addSampleStudyMaterials();
     addSampleAnnouncements();
+
+    // Add sample discussions
+    const addSampleDiscussions = require('./scripts/addSampleDiscussions');
+    addSampleDiscussions();
 }, 3000);
 
 // Restart trigger - updated 2
