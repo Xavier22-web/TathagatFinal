@@ -448,6 +448,43 @@ const loadMyCourses = async () => {
     }
   }, [announcementFilters, activeSection]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // Helper functions for announcements
+  const getAnnouncementIcon = (type) => {
+    switch (type) {
+      case 'important': return '🚨';
+      case 'update': return '📢';
+      case 'reminder': return '⏰';
+      case 'maintenance': return '🔧';
+      default: return '📄';
+    }
+  };
+
+  const formatAnnouncementDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now - date;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (days === 0) {
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      if (hours === 0) {
+        const minutes = Math.floor(diff / (1000 * 60));
+        return `${minutes} minutes ago`;
+      }
+      return `${hours} hours ago`;
+    } else if (days === 1) {
+      return 'Yesterday';
+    } else if (days < 7) {
+      return `${days} days ago`;
+    } else {
+      return date.toLocaleDateString('en-IN', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+    }
+  };
+
   const sidebarItems = [
     { id: 'dashboard', label: 'Dashboard', icon: FiHome },
     { id: 'courses', label: 'Available Courses', icon: FiBook },
@@ -1180,55 +1217,78 @@ const loadMyCourses = async () => {
       <div className="section-header">
         <h2>Announcements</h2>
         <div className="announcement-filters">
-          <button className="filter-btn active">All</button>
-          <button className="filter-btn">Important</button>
-          <button className="filter-btn">Updates</button>
+          <button
+            className={`filter-btn ${announcementFilters.type === 'all' ? 'active' : ''}`}
+            onClick={() => setAnnouncementFilters(prev => ({ ...prev, type: 'all' }))}
+          >
+            All
+          </button>
+          <button
+            className={`filter-btn ${announcementFilters.type === 'important' ? 'active' : ''}`}
+            onClick={() => setAnnouncementFilters(prev => ({ ...prev, type: 'important' }))}
+          >
+            Important
+          </button>
+          <button
+            className={`filter-btn ${announcementFilters.type === 'update' ? 'active' : ''}`}
+            onClick={() => setAnnouncementFilters(prev => ({ ...prev, type: 'update' }))}
+          >
+            Updates
+          </button>
+          <button
+            className={`filter-btn ${announcementFilters.type === 'reminder' ? 'active' : ''}`}
+            onClick={() => setAnnouncementFilters(prev => ({ ...prev, type: 'reminder' }))}
+          >
+            Reminders
+          </button>
         </div>
       </div>
 
       <div className="announcements-list">
-        {[
-          {
-            title: '🎉 New Mock Test Series Released!',
-            content: 'We have launched the latest CAT 2024 mock test series with updated patterns.',
-            date: '2024-01-28',
-            type: 'important',
-            unread: true
-          },
-          {
-            title: '📚 Study Material Updated',
-            content: 'Quantitative Aptitude formulas and shortcuts have been updated with new content.',
-            date: '2024-01-26',
-            type: 'update',
-            unread: false
-          },
-          {
-            title: '🔔 Upcoming Live Session',
-            content: 'Join us for a special doubt clearing session on Data Interpretation this Friday.',
-            date: '2024-01-25',
-            type: 'reminder',
-            unread: false
-          },
-          {
-            title: '🎯 Performance Report Available',
-            content: 'Your monthly performance report is now available in the Analysis section.',
-            date: '2024-01-23',
-            type: 'update',
-            unread: false
-          }
-        ].map((announcement, index) => (
-          <div key={index} className={`announcement-card ${announcement.unread ? 'unread' : ''}`}>
-            <div className="announcement-header">
-              <h3>{announcement.title}</h3>
-              <span className="announcement-date">{announcement.date}</span>
-            </div>
-            <p>{announcement.content}</p>
-            <div className="announcement-actions">
-              <button className="read-more-btn">Read More</button>
-              {announcement.unread && <span className="unread-indicator">New</span>}
-            </div>
+        {announcementsLoading ? (
+          <div className="loading-announcements">
+            <div className="loading-spinner"></div>
+            <p>Loading announcements...</p>
           </div>
-        ))}
+        ) : announcements.length === 0 ? (
+          <div className="no-announcements">
+            <FiBell size={48} />
+            <h3>No Announcements</h3>
+            <p>Check back later for new announcements.</p>
+          </div>
+        ) : (
+          announcements.map((announcement) => (
+            <div
+              key={announcement._id}
+              className={`announcement-card ${announcement.isUnread ? 'unread' : ''}`}
+              onClick={() => {
+                if (announcement.isUnread) {
+                  markAnnouncementAsRead(announcement._id);
+                }
+              }}
+            >
+              <div className="announcement-header">
+                <h3>
+                  {announcement.isPinned && <span className="pin-badge">📌</span>}
+                  {getAnnouncementIcon(announcement.type)} {announcement.title}
+                </h3>
+                <span className="announcement-date">
+                  {announcement.timeAgo || announcement.formattedDate || formatAnnouncementDate(announcement.createdAt)}
+                </span>
+              </div>
+              <p>{announcement.content}</p>
+              <div className="announcement-actions">
+                <span className={`announcement-type ${announcement.type}`}>
+                  {announcement.type.toUpperCase()}
+                </span>
+                <span className={`announcement-priority priority-${announcement.priority}`}>
+                  {announcement.priority.toUpperCase()}
+                </span>
+                {announcement.isUnread && <span className="unread-indicator">New</span>}
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );
