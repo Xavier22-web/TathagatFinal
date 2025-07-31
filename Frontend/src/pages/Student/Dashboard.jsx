@@ -314,7 +314,7 @@ const loadMyCourses = async () => {
   const handleDownloadMaterial = async (materialId, materialTitle) => {
     const authToken = localStorage.getItem('authToken');
 
-    if (!authToken) {
+    if (!authToken || authToken === 'null' || authToken === 'undefined') {
       alert('Please login to download study materials!');
       navigate('/login');
       return;
