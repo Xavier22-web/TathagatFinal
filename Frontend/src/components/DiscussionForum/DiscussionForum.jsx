@@ -102,17 +102,25 @@ const DiscussionForum = () => {
         body: JSON.stringify({ voteType })
       });
 
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
       if (data.success) {
         // Update the discussion in state
-        setDiscussions(prev => prev.map(disc => 
-          disc._id === discussionId 
+        setDiscussions(prev => prev.map(disc =>
+          disc._id === discussionId
             ? { ...disc, upvotes: data.upvotes, downvotes: data.downvotes }
             : disc
         ));
+      } else {
+        console.error('Vote failed:', data.message);
+        alert(data.message || 'Failed to vote');
       }
     } catch (error) {
       console.error('Error voting:', error);
+      alert('Failed to vote. Please try again.');
     }
   };
 
