@@ -1,0 +1,412 @@
+/* Header.css */
+* {
+  box-sizing: border-box;
+}
+
+.tg-header {
+  font-family: Arial, sans-serif;
+}
+
+/* 🟦 Top Bar Layout: 3 Sections */
+.tg-top-bar {
+  background-color: #121850;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 62px;
+  font-size: 13px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Left: Contact Info */
+.tg-contact-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tg-contact-left .icon {
+  margin-right: 4px;
+}
+
+/* Center: Top Links */
+.tg-top-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.tg-top-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 10px;
+  transition: color 0.3s ease;
+}
+
+.tg-top-links a:hover {
+  color: #ffb703;
+}
+
+/* Right: Social Icons */
+.tg-social-icons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.tg-social-icons .icon {
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  transition: transform 0.2s ease;
+}
+
+.tg-social-icons .fa-whatsapp {
+  background-color: #25d366;
+}
+
+.tg-social-icons .fa-instagram {
+  background-color: #e1306c;
+}
+
+.tg-social-icons .fa-telegram-plane {
+  background-color: #0088cc;
+}
+
+.tg-social-icons .fa-facebook-f {
+  background-color: #3b5998;
+}
+
+.tg-social-icons .icon:hover {
+  transform: scale(1.1);
+}
+
+/* Dropdown Icon */
+.dropdown-icon {
+  font-size: 10px;
+  margin-left: 6px;
+  vertical-align: middle;
+  transition: transform 0.2s ease;
+}
+
+/* 🔵 Main Nav Bar */
+.tg-main-nav {
+  background-color: #1a237e;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 58px;
+  color: white;
+  flex-wrap: wrap;
+}
+
+/* Logo */
+.tg-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tg-logo img {
+  height: 50px;
+}
+
+/* Nav Links */
+.tg-nav-links {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.tg-nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.tg-nav-links a:hover {
+  color: #ffb703;
+}
+
+/* Nav Action Buttons */
+.tg-nav-actions {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.tg-nav-actions .btn {
+  padding: 5px 12px;
+  border-radius: 4px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.3s ease;
+}
+
+.tg-nav-actions .btn.white {
+  background: white;
+  color: #001858;
+}
+
+.tg-nav-actions .btn.orange {
+  background-color: #f25c54;
+  color: white;
+}
+
+.tg-nav-actions .btn.white:hover,
+.tg-nav-actions .btn.orange:hover {
+  opacity: 0.85;
+}
+
+.tg-hamburger {
+  display: none;
+  color: white;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+
+
+/* ✅ Base Styles (Already Present, No Changes Here) */
+
+/* ...Your existing desktop styles here... */
+
+
+/* ✅ Unified Mobile Responsive Styles (<=768px) */
+@media screen and (max-width: 768px) {
+  .tg-top-bar {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 10px 20px;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .tg-top-left,
+  .tg-top-right,
+  .tg-top-center {
+    flex: 1 1 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .tg-top-left .tg-contact-left {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tg-top-right.tg-social-icons {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .tg-top-links a {
+    font-size: 11px;
+    padding: 3px 6px;
+    display: inline-block;
+  }
+
+  .tg-main-nav {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    position: relative;
+  }
+/* 
+  .tg-logo img {
+    height: 30px;
+    width: auto;
+  } */
+
+  .tg-hamburger {
+    display: block;
+  }
+
+  .mobile-hide {
+    display: none !important;
+  }
+/* 
+  .tg-nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #0d47a1;
+    width: 220px;
+    padding: 10px;
+    z-index: 9999;
+    border: 1px solid #fff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  .tg-nav-links.open {
+    display: flex;
+  }
+
+  .tg-nav-links a,
+  .tg-nav-actions .btn {
+    text-align: right;
+    padding: 8px 12px;
+  }
+
+  .tg-nav-actions {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
+  }
+
+  .tg-nav-actions .btn {
+    width: 100%;
+    max-width: 180px;
+  } */
+
+  .tg-footer-top,
+  .tg-footer-bottom {
+    grid-template-columns: 1fr;  /* single column on small screen */
+  }
+
+  .tg-footer-left h2 {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .tg-footer-right {
+    text-align: center;
+  }
+
+  .tg-subscribe-form {
+    align-items: center;
+  }
+
+  .tg-subscribe-form input,
+  .tg-subscribe-form p {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .tg-footer-watermark {
+    display: none;
+  }
+
+  .tt-student-card {
+    width: 240px;
+    min-height: 320px;
+    max-height: 360px;
+  }
+
+  .tt-student-img {
+    height: 240px;
+  }
+
+  .tt-student-card img,
+  .tt-student-overlay {
+    height: 260px;
+  }
+
+  .tt-student-name {
+    font-size: 14px;
+  }
+
+  .tt-student-percentile {
+    font-size: 15px;
+    padding: 8px 12px;
+  }
+
+  .catresults-top-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .catresults-title {
+    font-size: 36px;
+  }
+
+  .catresults-number {
+    font-size: 36px;
+  }
+
+  .catresults-label {
+    font-size: 16px;
+  }
+
+  .catresults-box {
+    flex: 1 1 100px;
+    min-width: 80px;
+  }
+
+  .tt-view-all {
+    align-self: flex-start;
+    padding: 6px 12px;
+    font-size: 14px;
+  }
+
+  .tt-circle-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 16px;
+  }
+
+  .tt-dot {
+    width: 30px;
+  }
+
+  .tg-footer-links {
+    gap: 40px;
+    justify-content: center;
+  }
+
+  .tg-footer-social {
+    margin-top: 20px;
+    justify-content: center;
+  }
+}
+
+
+
+@media screen and (max-width: 768px) {
+  .tg-logo img {
+    height: 28px;   /* 👈 Pehle 45px tha, ab 28px kar diya */
+    width: 100px;
+    max-width: 100px;  /* optional limit to prevent wide logos */
+    object-fit: contain;
+  }
+}
+
+
+@media screen and (max-width: 768px) {
+  .tg-hamburger {
+    display: none !important;
+  }
+
+  .tg-nav-links {
+    display: none !important;
+  }
+
+  .tg-nav-actions {
+    display: flex !important;
+    flex-direction: row;
+    gap: 3px;
+    margin-left: auto;
+  }
+
+  .tg-nav-actions .btn {
+    padding: 2px 4px;
+    font-size: 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+}
