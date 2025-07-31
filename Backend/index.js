@@ -362,7 +362,7 @@ setTimeout(() => {
     addSampleAnnouncements();
 }, 3000);
 
-// Restart trigger - updated
+// Restart trigger - updated 2
 
 // ======================= Development Mock Data ========================================
 // if (process.env.NODE_ENV !== 'production') {
