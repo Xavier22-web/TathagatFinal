@@ -246,8 +246,121 @@ const addSampleStudyMaterials = async () => {
     }
 };
 
+// ======================= Add Sample Announcements ========================================
+const addSampleAnnouncements = async () => {
+    try {
+        const Announcement = require('./models/Announcement');
+        const Admin = require('./models/Admin');
+
+        // Check if announcements already exist
+        const existingCount = await Announcement.countDocuments();
+        if (existingCount > 0) {
+            console.log(`📢 ${existingCount} announcements already exist in database`);
+            return;
+        }
+
+        // Get first admin user
+        let admin = await Admin.findOne();
+
+        if (!admin) {
+            console.log('⚠️ No admin found for announcements');
+            return;
+        }
+
+        // Sample announcements data
+        const sampleAnnouncements = [
+            {
+                title: '🎉 New Mock Test Series Released!',
+                content: 'We have launched the latest CAT 2024 mock test series with updated patterns and difficulty levels. These tests are designed to simulate the actual exam environment.',
+                type: 'important',
+                priority: 'high',
+                targetAudience: 'students',
+                isPinned: true,
+                createdBy: admin._id,
+                tags: ['mock tests', 'CAT 2024', 'new release'],
+                isActive: true
+            },
+            {
+                title: '📚 Study Materials Updated',
+                content: 'Quantitative Aptitude formulas and shortcuts have been updated with new content covering advanced topics and time-saving techniques.',
+                type: 'update',
+                priority: 'medium',
+                targetAudience: 'students',
+                isPinned: false,
+                createdBy: admin._id,
+                tags: ['study materials', 'quantitative aptitude', 'update'],
+                isActive: true
+            },
+            {
+                title: '🔔 Upcoming Live Session',
+                content: 'Join us for a special doubt clearing session on Data Interpretation this Friday at 7 PM. Our expert faculty will solve complex DI problems.',
+                type: 'reminder',
+                priority: 'medium',
+                targetAudience: 'students',
+                isPinned: false,
+                createdBy: admin._id,
+                tags: ['live session', 'data interpretation', 'doubt clearing'],
+                expiryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // Expires in 7 days
+                isActive: true
+            },
+            {
+                title: '🎯 Performance Reports Available',
+                content: 'Your monthly performance report is now available in the Analysis section. Check your progress and identify areas for improvement.',
+                type: 'update',
+                priority: 'low',
+                targetAudience: 'students',
+                isPinned: false,
+                createdBy: admin._id,
+                tags: ['performance report', 'analysis', 'progress'],
+                isActive: true
+            },
+            {
+                title: '💡 New Feature: AI-Powered Question Recommendations',
+                content: 'We have introduced an AI-powered recommendation system that suggests practice questions based on your weak areas and learning patterns.',
+                type: 'general',
+                priority: 'medium',
+                targetAudience: 'all',
+                isPinned: false,
+                createdBy: admin._id,
+                tags: ['AI', 'recommendations', 'personalized learning'],
+                isActive: true
+            },
+            {
+                title: '🔧 Scheduled Maintenance',
+                content: 'The platform will undergo scheduled maintenance on Sunday from 2 AM to 4 AM IST. Some features may be temporarily unavailable.',
+                type: 'maintenance',
+                priority: 'high',
+                targetAudience: 'all',
+                isPinned: false,
+                createdBy: admin._id,
+                tags: ['maintenance', 'downtime', 'schedule'],
+                expiryDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), // Expires in 3 days
+                isActive: true
+            }
+        ];
+
+        // Insert all announcements
+        const insertedAnnouncements = await Announcement.insertMany(sampleAnnouncements);
+
+        console.log(`✅ Successfully added ${insertedAnnouncements.length} sample announcements:`);
+        insertedAnnouncements.forEach((announcement, index) => {
+            console.log(`${index + 1}. ${announcement.title} (${announcement.type} - ${announcement.priority})`);
+        });
+
+        // Display summary
+        const totalAnnouncements = await Announcement.countDocuments();
+        console.log(`\n📢 Total announcements in database: ${totalAnnouncements}`);
+
+    } catch (error) {
+        console.error('❌ Error adding sample announcements:', error);
+    }
+};
+
 // Call the function after DB connection
-setTimeout(addSampleStudyMaterials, 3000);
+setTimeout(() => {
+    addSampleStudyMaterials();
+    addSampleAnnouncements();
+}, 3000);
 
 // Restart trigger
 
