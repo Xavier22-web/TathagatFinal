@@ -369,12 +369,84 @@ const loadMyCourses = async () => {
     }
   };
 
+  // Load announcements
+  const loadAnnouncements = async () => {
+    setAnnouncementsLoading(true);
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const queryParams = new URLSearchParams({
+        ...(announcementFilters.type !== 'all' && { type: announcementFilters.type }),
+        limit: 20
+      });
+
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+
+      // Only add Authorization header if we have a valid token
+      if (authToken && authToken !== 'null' && authToken !== 'undefined') {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+
+      const response = await fetch(`/api/announcements/student?${queryParams}`, {
+        headers
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setAnnouncements(data.data);
+          console.log('✅ Announcements loaded:', data.data.length);
+        } else {
+          console.error('❌ Failed to load announcements:', data.message);
+          setAnnouncements([]);
+        }
+      } else {
+        console.error('❌ Announcements API error:', response.status);
+        setAnnouncements([]);
+      }
+    } catch (error) {
+      console.error('❌ Error loading announcements:', error);
+      setAnnouncements([]);
+    } finally {
+      setAnnouncementsLoading(false);
+    }
+  };
+
+  // Mark announcement as read
+  const markAnnouncementAsRead = async (announcementId) => {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken || authToken === 'null' || authToken === 'undefined') {
+      return; // Skip if no auth token
+    }
+
+    try {
+      await fetch(`/api/announcements/mark-read/${announcementId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+    } catch (error) {
+      console.error('❌ Error marking announcement as read:', error);
+    }
+  };
+
   // Load study materials when filters change
   useEffect(() => {
     if (activeSection === 'materials') {
       loadStudyMaterials();
     }
   }, [materialFilters, activeSection]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load announcements when filters change
+  useEffect(() => {
+    if (activeSection === 'announcements') {
+      loadAnnouncements();
+    }
+  }, [announcementFilters, activeSection]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const sidebarItems = [
     { id: 'dashboard', label: 'Dashboard', icon: FiHome },
