@@ -855,52 +855,83 @@ const loadMyCourses = async () => {
       <div className="section-header">
         <h2>Study Materials</h2>
         <div className="materials-filters">
-          <select>
+          <select
+            value={materialFilters.subject}
+            onChange={(e) => setMaterialFilters(prev => ({ ...prev, subject: e.target.value }))}
+          >
             <option>All Subjects</option>
             <option>Quantitative Aptitude</option>
             <option>Verbal Ability</option>
             <option>Data Interpretation</option>
+            <option>Logical Reasoning</option>
+            <option>General Knowledge</option>
           </select>
-          <select>
+          <select
+            value={materialFilters.type}
+            onChange={(e) => setMaterialFilters(prev => ({ ...prev, type: e.target.value }))}
+          >
             <option>All Types</option>
             <option>PDF</option>
             <option>Video</option>
             <option>Practice Sets</option>
+            <option>Notes</option>
           </select>
         </div>
       </div>
 
       <div className="materials-grid">
-        {[
-          { title: 'Quantitative Aptitude Formula Book', type: 'PDF', size: '5.2 MB', downloads: 1234 },
-          { title: 'Verbal Ability Video Lectures', type: 'Video', duration: '4h 30m', views: 856 },
-          { title: 'Data Interpretation Practice Sets', type: 'PDF', size: '3.8 MB', downloads: 945 },
-          { title: 'Logical Reasoning Shortcuts', type: 'Video', duration: '2h 15m', views: 672 },
-          { title: 'CAT Previous Year Papers', type: 'PDF', size: '12.5 MB', downloads: 2156 },
-          { title: 'Reading Comprehension Passages', type: 'PDF', size: '7.3 MB', downloads: 789 }
-        ].map((material, index) => (
-          <div key={index} className="material-card">
-            <div className="material-icon">
-              {material.type === 'PDF' ? <FiDownload /> : <FiPlay />}
-            </div>
-            <div className="material-info">
-              <h4>{material.title}</h4>
-              <div className="material-meta">
-                <span>{material.type}</span>
-                <span>{material.size || material.duration}</span>
-                <span>{material.downloads ? `${material.downloads} downloads` : `${material.views} views`}</span>
+        {materialsLoading ? (
+          <div className="loading-materials">
+            <div className="loading-spinner"></div>
+            <p>Loading study materials...</p>
+          </div>
+        ) : studyMaterials.length === 0 ? (
+          <div className="no-materials">
+            <FiFileText size={48} />
+            <h3>No Study Materials Found</h3>
+            <p>Check back later for new materials or try different filters.</p>
+          </div>
+        ) : (
+          studyMaterials.map((material) => (
+            <div key={material._id} className="material-card">
+              <div className="material-icon">
+                {material.type === 'PDF' ? <FiDownload /> :
+                 material.type === 'Video' ? <FiPlay /> : <FiFileText />}
+              </div>
+              <div className="material-info">
+                <h4>{material.title}</h4>
+                <div className="material-meta">
+                  <span className="material-type">{material.type}</span>
+                  <span className="material-size">{material.fileSize}</span>
+                  <span className="material-downloads">{material.downloadCount} downloads</span>
+                </div>
+                {material.description && (
+                  <p className="material-description">{material.description}</p>
+                )}
+                <div className="material-subject">
+                  <small>{material.subject}</small>
+                </div>
+              </div>
+              <div className="material-actions">
+                <button
+                  className="download-btn"
+                  onClick={() => handleDownloadMaterial(material._id, material.title)}
+                  disabled={downloading === material._id}
+                  title="Download Material"
+                >
+                  {downloading === material._id ? (
+                    <div className="download-spinner"></div>
+                  ) : (
+                    <FiDownload />
+                  )}
+                </button>
+                <button className="share-btn" title="Share Material">
+                  <FiShare2 />
+                </button>
               </div>
             </div>
-            <div className="material-actions">
-              <button className="download-btn">
-                <FiDownload />
-              </button>
-              <button className="share-btn">
-                <FiShare2 />
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
