@@ -114,8 +114,13 @@ router.get("/iim-predictor/:userId", async (req, res) => {
         res.status(200).json(responseData);
 
     } catch (error) {
-        console.error("❌ Error fetching data:", error);
-        res.status(500).json({ message: "Server error. Please try again later." });
+        console.error("❌ Error in IIM Predictor route:", error);
+        console.error("❌ Error stack:", error.stack);
+        res.status(500).json({
+            success: false,
+            message: "Server error. Please try again later.",
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 });
 
