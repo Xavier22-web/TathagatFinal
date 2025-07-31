@@ -3,7 +3,7 @@ require('dotenv').config();
 
 const Discussion = require('../models/Discussion');
 const DiscussionReply = require('../models/DiscussionReply');
-const User = require('../models/User');
+const User = require('../models/UserSchema');
 const Admin = require('../models/Admin');
 
 const sampleDiscussions = [
