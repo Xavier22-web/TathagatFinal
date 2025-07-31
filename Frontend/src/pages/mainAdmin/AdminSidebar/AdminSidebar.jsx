@@ -33,6 +33,9 @@ const AdminSidebar = () => {
         <NavLink to="/admin/announcements" className="admin-link">
           <FaBullhorn className="admin-icon" /> Announcements
         </NavLink>
+        <NavLink to="/admin/discussions" className="admin-link">
+          <FaComments className="admin-icon" /> Discussions
+        </NavLink>
         <NavLink to="/admin/all-users" className="admin-link">
           <FaUsers className="admin-icon" /> All Users
         </NavLink>
