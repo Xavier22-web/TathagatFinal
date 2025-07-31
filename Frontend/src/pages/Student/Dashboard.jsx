@@ -26,7 +26,8 @@ import {
   FiCheckCircle,
   FiEye,
   FiHeart,
-  FiShare2
+  FiShare2,
+  FiFileText
 } from 'react-icons/fi';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import {
@@ -71,6 +72,15 @@ const StudentDashboard = () => {
   });
   const [myCourses, setMyCourses] = useState([]);
   const [myCoursesLoading, setMyCoursesLoading] = useState(false);
+
+  // Study Materials state
+  const [studyMaterials, setStudyMaterials] = useState([]);
+  const [materialsLoading, setMaterialsLoading] = useState(false);
+  const [materialFilters, setMaterialFilters] = useState({
+    subject: 'All Subjects',
+    type: 'All Types'
+  });
+  const [downloading, setDownloading] = useState(null);
 
   // Load user data from localStorage
   useEffect(() => {
