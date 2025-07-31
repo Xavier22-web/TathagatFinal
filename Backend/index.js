@@ -364,6 +364,10 @@ setTimeout(() => {
     // Add sample discussions
     const addSampleDiscussions = require('./scripts/addSampleDiscussions');
     addSampleDiscussions();
+
+    // Add sample mock tests
+    const addSampleMockTests = require('./scripts/addSampleMockTests');
+    addSampleMockTests();
 }, 3000);
 
 // Restart trigger - updated 2
