@@ -8,7 +8,7 @@ const {
   voteDiscussion,
   getUserDiscussions
 } = require('../controllers/DiscussionController');
-const authMiddleware = require('../middleware/authMiddleware');
+const { authMiddleware } = require('../middleware/authMiddleware');
 
 // Student routes for discussions
 router.post('/create', authMiddleware, createDiscussion);
