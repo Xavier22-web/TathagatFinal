@@ -341,7 +341,7 @@ const DiscussionManagement = () => {
                 <FiEye /> {discussion.isPublished ? 'Unpublish' : 'Publish'}
               </button>
               <button onClick={() => moderateDiscussion(discussion._id, discussion.isPinned ? 'unpin' : 'pin')}>
-                <FiPin /> {discussion.isPinned ? 'Unpin' : 'Pin'}
+                <FiStar /> {discussion.isPinned ? 'Unpin' : 'Pin'}
               </button>
               <button onClick={() => deleteDiscussion(discussion._id)} className="delete-action">
                 <FiTrash2 /> Delete
