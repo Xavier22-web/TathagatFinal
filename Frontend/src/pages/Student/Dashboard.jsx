@@ -266,6 +266,103 @@ const loadMyCourses = async () => {
     }
   };
 
+  // Load study materials
+  const loadStudyMaterials = async () => {
+    setMaterialsLoading(true);
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const queryParams = new URLSearchParams({
+        ...(materialFilters.subject !== 'All Subjects' && { subject: materialFilters.subject }),
+        ...(materialFilters.type !== 'All Types' && { type: materialFilters.type })
+      });
+
+      const response = await fetch(`/api/study-materials/student?${queryParams}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setStudyMaterials(data.data);
+          console.log('✅ Study materials loaded:', data.data.length);
+        } else {
+          console.error('❌ Failed to load study materials:', data.message);
+          setStudyMaterials([]);
+        }
+      } else {
+        console.error('❌ Study materials API error:', response.status);
+        setStudyMaterials([]);
+      }
+    } catch (error) {
+      console.error('❌ Error loading study materials:', error);
+      setStudyMaterials([]);
+    } finally {
+      setMaterialsLoading(false);
+    }
+  };
+
+  // Handle material download
+  const handleDownloadMaterial = async (materialId, materialTitle) => {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken) {
+      alert('Please login to download study materials!');
+      navigate('/login');
+      return;
+    }
+
+    setDownloading(materialId);
+
+    try {
+      const response = await fetch(`/api/study-materials/download/${materialId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+
+      if (response.ok) {
+        // Get the file blob
+        const blob = await response.blob();
+
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = materialTitle;
+        document.body.appendChild(link);
+        link.click();
+
+        // Cleanup
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+
+        console.log('✅ Material downloaded successfully');
+
+        // Refresh materials to update download count
+        loadStudyMaterials();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || 'Failed to download material');
+        console.error('❌ Download failed:', errorData);
+      }
+    } catch (error) {
+      console.error('❌ Error downloading material:', error);
+      alert('Failed to download material. Please try again.');
+    } finally {
+      setDownloading(null);
+    }
+  };
+
+  // Load study materials when filters change
+  useEffect(() => {
+    if (activeSection === 'materials') {
+      loadStudyMaterials();
+    }
+  }, [materialFilters, activeSection]);
+
   const sidebarItems = [
     { id: 'dashboard', label: 'Dashboard', icon: FiHome },
     { id: 'courses', label: 'Available Courses', icon: FiBook },
