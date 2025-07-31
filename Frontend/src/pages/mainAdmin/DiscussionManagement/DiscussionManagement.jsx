@@ -14,7 +14,7 @@ import {
   FiClock,
   FiThumbsUp,
   FiThumbsDown,
-  FiPin,
+  FiStar,
   FiMoreVertical,
   FiAlertTriangle,
   FiRefreshCw
