@@ -437,6 +437,8 @@ app.use("/api/responses", responseRoutes);
 app.use("/api/upload", uploadRoute);
 app.use("/api/study-materials", require("./routes/StudyMaterialRoute"));
 app.use("/api/announcements", require("./routes/AnnouncementRoute"));
+app.use("/api/discussions", discussionRoutes);
+app.use("/api/admin/discussions", adminDiscussionRoutes);
 app.use("/api/sample", require("./routes/sampleData"));
 // app.use("/api/practice-tests", practiceTestRoutes);
 
