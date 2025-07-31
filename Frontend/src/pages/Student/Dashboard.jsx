@@ -307,7 +307,7 @@ const loadMyCourses = async () => {
           setStudyMaterials([]);
         }
       } else {
-        console.error('��� Study materials API error:', response.status);
+        console.error('❌ Study materials API error:', response.status);
         setStudyMaterials([]);
       }
     } catch (error) {
@@ -1008,77 +1008,7 @@ const loadMyCourses = async () => {
     </div>
   );
 
-  const renderDoubtsContent = () => (
-    <div className="doubts-content">
-      <div className="section-header">
-        <h2>Doubts & Discussions</h2>
-        <button className="primary-btn">Ask Question</button>
-      </div>
-
-      <div className="forum-stats">
-        <div className="stat-item">
-          <FiMessageCircle />
-          <span>45 Questions Asked</span>
-        </div>
-        <div className="stat-item">
-          <FiUsers />
-          <span>234 Active Members</span>
-        </div>
-        <div className="stat-item">
-          <FiStar />
-          <span>4.8 Average Rating</span>
-        </div>
-      </div>
-
-      <div className="recent-discussions">
-        <h3>Recent Discussions</h3>
-        <div className="discussions-list">
-          {[
-            {
-              title: 'How to solve Time and Work problems efficiently?',
-              author: 'Rahul Kumar',
-              replies: 8,
-              likes: 15,
-              time: '2 hours ago',
-              subject: 'Quantitative Aptitude'
-            },
-            {
-              title: 'Best strategy for Reading Comprehension?',
-              author: 'Priya Sharma',
-              replies: 12,
-              likes: 23,
-              time: '4 hours ago',
-              subject: 'Verbal Ability'
-            },
-            {
-              title: 'Data Interpretation shortcuts and tricks',
-              author: 'Amit Singh',
-              replies: 6,
-              likes: 18,
-              time: '1 day ago',
-              subject: 'Data Interpretation'
-            }
-          ].map((discussion, index) => (
-            <div key={index} className="discussion-card">
-              <div className="discussion-header">
-                <h4>{discussion.title}</h4>
-                <span className="subject-tag">{discussion.subject}</span>
-              </div>
-              <div className="discussion-meta">
-                <span>By {discussion.author}</span>
-                <span>{discussion.time}</span>
-              </div>
-              <div className="discussion-actions">
-                <span><FiMessageCircle /> {discussion.replies} replies</span>
-                <span><FiHeart /> {discussion.likes} likes</span>
-                <button className="reply-btn">Reply</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  const renderDoubtsContent = () => <DiscussionForum />;
 
   const renderMaterialsContent = () => (
     <div className="materials-content">
