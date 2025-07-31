@@ -276,11 +276,17 @@ const loadMyCourses = async () => {
         ...(materialFilters.type !== 'All Types' && { type: materialFilters.type })
       });
 
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+
+      // Only add Authorization header if we have a valid token
+      if (authToken && authToken !== 'null' && authToken !== 'undefined') {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+
       const response = await fetch(`/api/study-materials/student?${queryParams}`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
-        }
+        headers
       });
 
       if (response.ok) {
