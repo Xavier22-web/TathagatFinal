@@ -1,6 +1,6 @@
 const Discussion = require('../models/Discussion');
 const DiscussionReply = require('../models/DiscussionReply');
-const User = require('../models/User');
+const User = require('../models/UserSchema');
 
 // Create a new discussion/question
 const createDiscussion = async (req, res) => {
