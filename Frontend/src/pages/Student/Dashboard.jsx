@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import { fetchPublishedCourses } from '../../utils/api';
 import DiscussionForum from '../../components/DiscussionForum/DiscussionForum';
+import MockTestPage from './MockTests/MockTestPage';
 import {
   FiHome,
   FiBook,
