@@ -241,12 +241,15 @@ const addSampleDiscussions = async () => {
     console.log(`⏳ Pending Discussions: ${pendingDiscussions}`);
     console.log(`✅ Approved Discussions: ${approvedDiscussions}`);
     console.log('\n🎉 Sample discussion data added successfully!');
-    
+
   } catch (error) {
     console.error('❌ Error adding sample discussions:', error);
   } finally {
-    await mongoose.disconnect();
-    console.log('👋 Disconnected from MongoDB');
+    // Don't disconnect when called from main server
+    if (require.main === module) {
+      await mongoose.disconnect();
+      console.log('👋 Disconnected from MongoDB');
+    }
   }
 };
 
