@@ -68,6 +68,8 @@ import CourseContentManager from "./pages/mainAdmin/CourseContentManager/CourseC
 import CourseTreeView from "./pages/mainAdmin/CourseTreeView/CourseTreeView"; // ⬅️ isko top par bhi import karna
 import CourseStructure from "./pages/mainAdmin/CourseTreeView/CourseStructure";
 import PracticeTestManagement from "./pages/mainAdmin/PracticeTestManagement/PracticeTestManagement";
+import StudyMaterials from "./pages/mainAdmin/StudyMaterials/StudyMaterials";
+import Announcements from "./pages/mainAdmin/Announcements/Announcements";
 import StudentPracticeTests from "./pages/Student/PracticeTests/StudentPracticeTests";
 import TestInstructions from "./pages/Student/PracticeTests/TestInstructions";
 import SuccessStory from "./pages/SuccessStory/SuccessStory";
@@ -209,6 +211,24 @@ const AppContent = () => {
           element={
             <PrivateRoute tokenName="adminToken">
               <PracticeTestManagement />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/study-materials"
+          element={
+            <PrivateRoute tokenName="adminToken">
+              <StudyMaterials />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/admin/announcements"
+          element={
+            <PrivateRoute tokenName="adminToken">
+              <Announcements />
             </PrivateRoute>
           }
         />

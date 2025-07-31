@@ -26,7 +26,8 @@ import {
   FiCheckCircle,
   FiEye,
   FiHeart,
-  FiShare2
+  FiShare2,
+  FiFileText
 } from 'react-icons/fi';
 import { Line, Doughnut, Bar } from 'react-chartjs-2';
 import {
@@ -71,6 +72,22 @@ const StudentDashboard = () => {
   });
   const [myCourses, setMyCourses] = useState([]);
   const [myCoursesLoading, setMyCoursesLoading] = useState(false);
+
+  // Study Materials state
+  const [studyMaterials, setStudyMaterials] = useState([]);
+  const [materialsLoading, setMaterialsLoading] = useState(false);
+  const [materialFilters, setMaterialFilters] = useState({
+    subject: 'All Subjects',
+    type: 'All Types'
+  });
+  const [downloading, setDownloading] = useState(null);
+
+  // Announcements state
+  const [announcements, setAnnouncements] = useState([]);
+  const [announcementsLoading, setAnnouncementsLoading] = useState(false);
+  const [announcementFilters, setAnnouncementFilters] = useState({
+    type: 'all'
+  });
 
   // Load user data from localStorage
   useEffect(() => {
@@ -252,6 +269,218 @@ const loadMyCourses = async () => {
             'Study materials download'
           ]
         }
+      });
+    }
+  };
+
+  // Load study materials
+  const loadStudyMaterials = async () => {
+    setMaterialsLoading(true);
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const queryParams = new URLSearchParams({
+        ...(materialFilters.subject !== 'All Subjects' && { subject: materialFilters.subject }),
+        ...(materialFilters.type !== 'All Types' && { type: materialFilters.type })
+      });
+
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+
+      // Only add Authorization header if we have a valid token
+      if (authToken && authToken !== 'null' && authToken !== 'undefined') {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+
+      const response = await fetch(`/api/study-materials/student?${queryParams}`, {
+        headers
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setStudyMaterials(data.data);
+          console.log('✅ Study materials loaded:', data.data.length);
+        } else {
+          console.error('❌ Failed to load study materials:', data.message);
+          setStudyMaterials([]);
+        }
+      } else {
+        console.error('❌ Study materials API error:', response.status);
+        setStudyMaterials([]);
+      }
+    } catch (error) {
+      console.error('❌ Error loading study materials:', error);
+      setStudyMaterials([]);
+    } finally {
+      setMaterialsLoading(false);
+    }
+  };
+
+  // Handle material download
+  const handleDownloadMaterial = async (materialId, materialTitle) => {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken || authToken === 'null' || authToken === 'undefined') {
+      alert('Please login to download study materials!');
+      navigate('/login');
+      return;
+    }
+
+    setDownloading(materialId);
+
+    try {
+      const response = await fetch(`/api/study-materials/download/${materialId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+
+      if (response.ok) {
+        // Get the file blob
+        const blob = await response.blob();
+
+        // Create download link
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = materialTitle;
+        document.body.appendChild(link);
+        link.click();
+
+        // Cleanup
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+
+        console.log('✅ Material downloaded successfully');
+
+        // Refresh materials to update download count
+        loadStudyMaterials();
+      } else {
+        const errorData = await response.json();
+        alert(errorData.message || 'Failed to download material');
+        console.error('❌ Download failed:', errorData);
+      }
+    } catch (error) {
+      console.error('❌ Error downloading material:', error);
+      alert('Failed to download material. Please try again.');
+    } finally {
+      setDownloading(null);
+    }
+  };
+
+  // Load announcements
+  const loadAnnouncements = async () => {
+    setAnnouncementsLoading(true);
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const queryParams = new URLSearchParams({
+        ...(announcementFilters.type !== 'all' && { type: announcementFilters.type }),
+        limit: 20
+      });
+
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+
+      // Only add Authorization header if we have a valid token
+      if (authToken && authToken !== 'null' && authToken !== 'undefined') {
+        headers['Authorization'] = `Bearer ${authToken}`;
+      }
+
+      const response = await fetch(`/api/announcements/student?${queryParams}`, {
+        headers
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setAnnouncements(data.data);
+          console.log('✅ Announcements loaded:', data.data.length);
+        } else {
+          console.error('❌ Failed to load announcements:', data.message);
+          setAnnouncements([]);
+        }
+      } else {
+        console.error('❌ Announcements API error:', response.status);
+        setAnnouncements([]);
+      }
+    } catch (error) {
+      console.error('❌ Error loading announcements:', error);
+      setAnnouncements([]);
+    } finally {
+      setAnnouncementsLoading(false);
+    }
+  };
+
+  // Mark announcement as read
+  const markAnnouncementAsRead = async (announcementId) => {
+    const authToken = localStorage.getItem('authToken');
+
+    if (!authToken || authToken === 'null' || authToken === 'undefined') {
+      return; // Skip if no auth token
+    }
+
+    try {
+      await fetch(`/api/announcements/mark-read/${announcementId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+    } catch (error) {
+      console.error('❌ Error marking announcement as read:', error);
+    }
+  };
+
+  // Load study materials when filters change
+  useEffect(() => {
+    if (activeSection === 'materials') {
+      loadStudyMaterials();
+    }
+  }, [materialFilters, activeSection]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load announcements when filters change
+  useEffect(() => {
+    if (activeSection === 'announcements') {
+      loadAnnouncements();
+    }
+  }, [announcementFilters, activeSection]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Helper functions for announcements
+  const getAnnouncementIcon = (type) => {
+    switch (type) {
+      case 'important': return '🚨';
+      case 'update': return '📢';
+      case 'reminder': return '⏰';
+      case 'maintenance': return '🔧';
+      default: return '📄';
+    }
+  };
+
+  const formatAnnouncementDate = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diff = now - date;
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+    if (days === 0) {
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      if (hours === 0) {
+        const minutes = Math.floor(diff / (1000 * 60));
+        return `${minutes} minutes ago`;
+      }
+      return `${hours} hours ago`;
+    } else if (days === 1) {
+      return 'Yesterday';
+    } else if (days < 7) {
+      return `${days} days ago`;
+    } else {
+      return date.toLocaleDateString('en-IN', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
       });
     }
   };
@@ -855,52 +1084,83 @@ const loadMyCourses = async () => {
       <div className="section-header">
         <h2>Study Materials</h2>
         <div className="materials-filters">
-          <select>
+          <select
+            value={materialFilters.subject}
+            onChange={(e) => setMaterialFilters(prev => ({ ...prev, subject: e.target.value }))}
+          >
             <option>All Subjects</option>
             <option>Quantitative Aptitude</option>
             <option>Verbal Ability</option>
             <option>Data Interpretation</option>
+            <option>Logical Reasoning</option>
+            <option>General Knowledge</option>
           </select>
-          <select>
+          <select
+            value={materialFilters.type}
+            onChange={(e) => setMaterialFilters(prev => ({ ...prev, type: e.target.value }))}
+          >
             <option>All Types</option>
             <option>PDF</option>
             <option>Video</option>
             <option>Practice Sets</option>
+            <option>Notes</option>
           </select>
         </div>
       </div>
 
       <div className="materials-grid">
-        {[
-          { title: 'Quantitative Aptitude Formula Book', type: 'PDF', size: '5.2 MB', downloads: 1234 },
-          { title: 'Verbal Ability Video Lectures', type: 'Video', duration: '4h 30m', views: 856 },
-          { title: 'Data Interpretation Practice Sets', type: 'PDF', size: '3.8 MB', downloads: 945 },
-          { title: 'Logical Reasoning Shortcuts', type: 'Video', duration: '2h 15m', views: 672 },
-          { title: 'CAT Previous Year Papers', type: 'PDF', size: '12.5 MB', downloads: 2156 },
-          { title: 'Reading Comprehension Passages', type: 'PDF', size: '7.3 MB', downloads: 789 }
-        ].map((material, index) => (
-          <div key={index} className="material-card">
-            <div className="material-icon">
-              {material.type === 'PDF' ? <FiDownload /> : <FiPlay />}
-            </div>
-            <div className="material-info">
-              <h4>{material.title}</h4>
-              <div className="material-meta">
-                <span>{material.type}</span>
-                <span>{material.size || material.duration}</span>
-                <span>{material.downloads ? `${material.downloads} downloads` : `${material.views} views`}</span>
+        {materialsLoading ? (
+          <div className="loading-materials">
+            <div className="loading-spinner"></div>
+            <p>Loading study materials...</p>
+          </div>
+        ) : studyMaterials.length === 0 ? (
+          <div className="no-materials">
+            <FiFileText size={48} />
+            <h3>No Study Materials Found</h3>
+            <p>Check back later for new materials or try different filters.</p>
+          </div>
+        ) : (
+          studyMaterials.map((material) => (
+            <div key={material._id} className="material-card">
+              <div className="material-icon">
+                {material.type === 'PDF' ? <FiDownload /> :
+                 material.type === 'Video' ? <FiPlay /> : <FiFileText />}
+              </div>
+              <div className="material-info">
+                <h4>{material.title}</h4>
+                <div className="material-meta">
+                  <span className="material-type">{material.type}</span>
+                  <span className="material-size">{material.fileSize}</span>
+                  <span className="material-downloads">{material.downloadCount} downloads</span>
+                </div>
+                {material.description && (
+                  <p className="material-description">{material.description}</p>
+                )}
+                <div className="material-subject">
+                  <small>{material.subject}</small>
+                </div>
+              </div>
+              <div className="material-actions">
+                <button
+                  className="download-btn"
+                  onClick={() => handleDownloadMaterial(material._id, material.title)}
+                  disabled={downloading === material._id}
+                  title="Download Material"
+                >
+                  {downloading === material._id ? (
+                    <div className="download-spinner"></div>
+                  ) : (
+                    <FiDownload />
+                  )}
+                </button>
+                <button className="share-btn" title="Share Material">
+                  <FiShare2 />
+                </button>
               </div>
             </div>
-            <div className="material-actions">
-              <button className="download-btn">
-                <FiDownload />
-              </button>
-              <button className="share-btn">
-                <FiShare2 />
-              </button>
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
@@ -957,55 +1217,78 @@ const loadMyCourses = async () => {
       <div className="section-header">
         <h2>Announcements</h2>
         <div className="announcement-filters">
-          <button className="filter-btn active">All</button>
-          <button className="filter-btn">Important</button>
-          <button className="filter-btn">Updates</button>
+          <button
+            className={`filter-btn ${announcementFilters.type === 'all' ? 'active' : ''}`}
+            onClick={() => setAnnouncementFilters(prev => ({ ...prev, type: 'all' }))}
+          >
+            All
+          </button>
+          <button
+            className={`filter-btn ${announcementFilters.type === 'important' ? 'active' : ''}`}
+            onClick={() => setAnnouncementFilters(prev => ({ ...prev, type: 'important' }))}
+          >
+            Important
+          </button>
+          <button
+            className={`filter-btn ${announcementFilters.type === 'update' ? 'active' : ''}`}
+            onClick={() => setAnnouncementFilters(prev => ({ ...prev, type: 'update' }))}
+          >
+            Updates
+          </button>
+          <button
+            className={`filter-btn ${announcementFilters.type === 'reminder' ? 'active' : ''}`}
+            onClick={() => setAnnouncementFilters(prev => ({ ...prev, type: 'reminder' }))}
+          >
+            Reminders
+          </button>
         </div>
       </div>
 
       <div className="announcements-list">
-        {[
-          {
-            title: '🎉 New Mock Test Series Released!',
-            content: 'We have launched the latest CAT 2024 mock test series with updated patterns.',
-            date: '2024-01-28',
-            type: 'important',
-            unread: true
-          },
-          {
-            title: '📚 Study Material Updated',
-            content: 'Quantitative Aptitude formulas and shortcuts have been updated with new content.',
-            date: '2024-01-26',
-            type: 'update',
-            unread: false
-          },
-          {
-            title: '🔔 Upcoming Live Session',
-            content: 'Join us for a special doubt clearing session on Data Interpretation this Friday.',
-            date: '2024-01-25',
-            type: 'reminder',
-            unread: false
-          },
-          {
-            title: '🎯 Performance Report Available',
-            content: 'Your monthly performance report is now available in the Analysis section.',
-            date: '2024-01-23',
-            type: 'update',
-            unread: false
-          }
-        ].map((announcement, index) => (
-          <div key={index} className={`announcement-card ${announcement.unread ? 'unread' : ''}`}>
-            <div className="announcement-header">
-              <h3>{announcement.title}</h3>
-              <span className="announcement-date">{announcement.date}</span>
-            </div>
-            <p>{announcement.content}</p>
-            <div className="announcement-actions">
-              <button className="read-more-btn">Read More</button>
-              {announcement.unread && <span className="unread-indicator">New</span>}
-            </div>
+        {announcementsLoading ? (
+          <div className="loading-announcements">
+            <div className="loading-spinner"></div>
+            <p>Loading announcements...</p>
           </div>
-        ))}
+        ) : announcements.length === 0 ? (
+          <div className="no-announcements">
+            <FiBell size={48} />
+            <h3>No Announcements</h3>
+            <p>Check back later for new announcements.</p>
+          </div>
+        ) : (
+          announcements.map((announcement) => (
+            <div
+              key={announcement._id}
+              className={`announcement-card ${announcement.isUnread ? 'unread' : ''}`}
+              onClick={() => {
+                if (announcement.isUnread) {
+                  markAnnouncementAsRead(announcement._id);
+                }
+              }}
+            >
+              <div className="announcement-header">
+                <h3>
+                  {announcement.isPinned && <span className="pin-badge">📌</span>}
+                  {getAnnouncementIcon(announcement.type)} {announcement.title}
+                </h3>
+                <span className="announcement-date">
+                  {announcement.timeAgo || announcement.formattedDate || formatAnnouncementDate(announcement.createdAt)}
+                </span>
+              </div>
+              <p>{announcement.content}</p>
+              <div className="announcement-actions">
+                <span className={`announcement-type ${announcement.type}`}>
+                  {announcement.type.toUpperCase()}
+                </span>
+                <span className={`announcement-priority priority-${announcement.priority}`}>
+                  {announcement.priority.toUpperCase()}
+                </span>
+                {announcement.isUnread && <span className="unread-indicator">New</span>}
+              </div>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
-const express=require("express")
-
+const express = require("express");
+const mongoose = require("mongoose");
 const User=require("../models/UserSchema")
 
 const IIMPredictor =  require("../models/IIMPredictorSchema")
@@ -67,23 +67,50 @@ router.post("/iim-predictor", async (req, res) => {
 
 router.get("/iim-predictor/:userId", async (req, res) => {
     try {
-        const { userId } = req.params; 
-        
+        const { userId } = req.params;
+
+        console.log('🔍 IIM Predictor request for userId:', userId);
+
         if (!userId) {
             return res.status(400).json({ message: "❌ userId is missing in the request!" });
+        }
+
+        // ✅ Validate ObjectId format
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            console.log('❌ Invalid ObjectId format:', userId);
+            return res.status(400).json({
+                success: false,
+                message: "❌ Invalid userId format!"
+            });
         }
 
         // ✅ Find the user's submitted IIM predictor data
         const predictionData = await IIMPredictor.findOne({ userId });
 
         if (!predictionData) {
+            console.log('⚠️ No prediction data found for userId:', userId);
             return res.status(404).json({ message: "No data found for this user!" });
         }
 
         // ✅ Fetch user name using `userId`
-        const user = await User.findById(userId).select("name"); 
+        let user = null;
+        try {
+            user = await User.findById(userId).select("name");
+        } catch (userError) {
+            console.error('❌ Error fetching user:', userError);
+            // Continue without user name if user fetch fails
+        }
+
         if (!user) {
-            return res.status(404).json({ message: "User not found!" });
+            console.log('⚠️ User not found for userId:', userId);
+            // Return prediction data without user name instead of failing
+            return res.status(200).json({
+                success: true,
+                data: {
+                    ...predictionData._doc,
+                    name: 'Unknown User'
+                }
+            });
         }
 
         // ✅ Merge User Name into Response
@@ -96,8 +123,13 @@ router.get("/iim-predictor/:userId", async (req, res) => {
         res.status(200).json(responseData);
 
     } catch (error) {
-        console.error("❌ Error fetching data:", error);
-        res.status(500).json({ message: "Server error. Please try again later." });
+        console.error("❌ Error in IIM Predictor route:", error);
+        console.error("❌ Error stack:", error.stack);
+        res.status(500).json({
+            success: false,
+            message: "Server error. Please try again later.",
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 });
 
