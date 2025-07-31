@@ -160,6 +160,7 @@ app.use("/api/questions", questionRoutes);
 app.use("/api/responses", responseRoutes);
 app.use("/api/upload", uploadRoute);
 app.use("/api/study-materials", require("./routes/StudyMaterialRoute"));
+app.use("/api/sample", require("./routes/sampleData"));
 // app.use("/api/practice-tests", practiceTestRoutes);
 
 // ======================= Global Error Handler ==========================
