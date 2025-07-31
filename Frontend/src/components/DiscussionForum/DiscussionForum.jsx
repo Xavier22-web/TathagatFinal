@@ -47,10 +47,16 @@ const DiscussionForum = () => {
       });
 
       const response = await fetch(`/api/discussions/published?${queryParams}`);
+
+      // Check if response is ok before trying to parse JSON
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
 
       if (data.success) {
-        setDiscussions(data.discussions);
+        setDiscussions(data.discussions || []);
         // Update forum stats
         setForumStats({
           totalQuestions: data.pagination?.total || 0,
@@ -59,9 +65,17 @@ const DiscussionForum = () => {
         });
       } else {
         console.error('Failed to fetch discussions:', data.message);
+        setDiscussions([]);
       }
     } catch (error) {
       console.error('Error fetching discussions:', error);
+      setDiscussions([]);
+      // Set empty stats on error
+      setForumStats({
+        totalQuestions: 0,
+        activeMembers: 0,
+        averageRating: 0
+      });
     } finally {
       setLoading(false);
     }
