@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import { fetchPublishedCourses } from '../../utils/api';
+import DiscussionForum from '../../components/DiscussionForum/DiscussionForum';
+import MockTestPage from './MockTests/MockTestPage';
 import {
   FiHome,
   FiBook,
@@ -882,50 +884,7 @@ const loadMyCourses = async () => {
     </div>
   );
 
-  const renderMockTestsContent = () => (
-    <div className="mock-tests-content">
-      <div className="section-header">
-        <h2>Mock Tests</h2>
-        <button className="primary-btn">Take New Mock</button>
-      </div>
-
-      <div className="mock-test-banner">
-        <div className="banner-content">
-          <h3>🎯 CAT Mock Test Series 2024</h3>
-          <p>Attempt comprehensive mock tests designed as per latest CAT pattern</p>
-          <button className="banner-cta">Start Mock Test</button>
-        </div>
-      </div>
-
-      <div className="mock-test-history">
-        <h3>Test History</h3>
-        <div className="history-table">
-          <div className="table-header">
-            <span>Test Name</span>
-            <span>Date</span>
-            <span>Score</span>
-            <span>Percentile</span>
-            <span>Action</span>
-          </div>
-          {[
-            { name: 'CAT Mock 1', date: '2024-01-15', score: '145/300', percentile: '78.5' },
-            { name: 'CAT Mock 2', date: '2024-01-20', score: '160/300', percentile: '82.3' },
-            { name: 'CAT Mock 3', date: '2024-01-25', score: '155/300', percentile: '80.1' }
-          ].map((test, index) => (
-            <div key={index} className="table-row">
-              <span>{test.name}</span>
-              <span>{test.date}</span>
-              <span>{test.score}</span>
-              <span>{test.percentile}%</span>
-              <button className="view-btn">
-                <FiEye /> View Report
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  const renderMockTestsContent = () => <MockTestPage />;
 
   const renderAnalysisContent = () => (
     <div className="analysis-content">
@@ -1007,77 +966,7 @@ const loadMyCourses = async () => {
     </div>
   );
 
-  const renderDoubtsContent = () => (
-    <div className="doubts-content">
-      <div className="section-header">
-        <h2>Doubts & Discussions</h2>
-        <button className="primary-btn">Ask Question</button>
-      </div>
-
-      <div className="forum-stats">
-        <div className="stat-item">
-          <FiMessageCircle />
-          <span>45 Questions Asked</span>
-        </div>
-        <div className="stat-item">
-          <FiUsers />
-          <span>234 Active Members</span>
-        </div>
-        <div className="stat-item">
-          <FiStar />
-          <span>4.8 Average Rating</span>
-        </div>
-      </div>
-
-      <div className="recent-discussions">
-        <h3>Recent Discussions</h3>
-        <div className="discussions-list">
-          {[
-            {
-              title: 'How to solve Time and Work problems efficiently?',
-              author: 'Rahul Kumar',
-              replies: 8,
-              likes: 15,
-              time: '2 hours ago',
-              subject: 'Quantitative Aptitude'
-            },
-            {
-              title: 'Best strategy for Reading Comprehension?',
-              author: 'Priya Sharma',
-              replies: 12,
-              likes: 23,
-              time: '4 hours ago',
-              subject: 'Verbal Ability'
-            },
-            {
-              title: 'Data Interpretation shortcuts and tricks',
-              author: 'Amit Singh',
-              replies: 6,
-              likes: 18,
-              time: '1 day ago',
-              subject: 'Data Interpretation'
-            }
-          ].map((discussion, index) => (
-            <div key={index} className="discussion-card">
-              <div className="discussion-header">
-                <h4>{discussion.title}</h4>
-                <span className="subject-tag">{discussion.subject}</span>
-              </div>
-              <div className="discussion-meta">
-                <span>By {discussion.author}</span>
-                <span>{discussion.time}</span>
-              </div>
-              <div className="discussion-actions">
-                <span><FiMessageCircle /> {discussion.replies} replies</span>
-                <span><FiHeart /> {discussion.likes} likes</span>
-                <button className="reply-btn">Reply</button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  const renderDoubtsContent = () => <DiscussionForum />;
 
   const renderMaterialsContent = () => (
     <div className="materials-content">

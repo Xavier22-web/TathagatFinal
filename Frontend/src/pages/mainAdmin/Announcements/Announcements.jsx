@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaEye, FaBullhorn, FaFilter, FaSearch, FaPushpin, FaUsers, FaExclamationTriangle } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaEye, FaBullhorn, FaFilter, FaSearch, FaThumbtack, FaUsers, FaExclamationTriangle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import './Announcements.css';
 
@@ -319,7 +319,7 @@ const Announcements = () => {
           
           <div className="stat-card">
             <div className="stat-icon pinned">
-              <FaPushpin />
+              <FaThumbtack />
             </div>
             <div className="stat-info">
               <h3>{stats.overview.pinned}</h3>
@@ -433,7 +433,7 @@ const Announcements = () => {
                         <span className="type-icon">{getTypeIcon(announcement.type)}</span>
                         <div>
                           <h4>
-                            {announcement.isPinned && <FaPushpin className="pin-icon" />}
+                            {announcement.isPinned && <FaThumbtack className="pin-icon" />}
                             {announcement.title}
                           </h4>
                           <p>{announcement.content.substring(0, 100)}...</p>

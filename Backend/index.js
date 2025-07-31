@@ -360,6 +360,14 @@ const addSampleAnnouncements = async () => {
 setTimeout(() => {
     addSampleStudyMaterials();
     addSampleAnnouncements();
+
+    // Add sample discussions
+    const addSampleDiscussions = require('./scripts/addSampleDiscussions');
+    addSampleDiscussions();
+
+    // Add sample mock tests
+    const addSampleMockTests = require('./scripts/addSampleMockTests');
+    addSampleMockTests();
 }, 3000);
 
 // Restart trigger - updated 2
@@ -410,6 +418,10 @@ const responseRoutes = require("./routes/ResponseRoute");
 const uploadRoute = require("./routes/UploadRoute");
 const bulkUploadRoute = require("./routes/bulkUpload");
 const zoomRoute = require("./routes/zoom");
+const discussionRoutes = require("./routes/DiscussionRoute");
+const adminDiscussionRoutes = require("./routes/AdminDiscussionRoute");
+const mockTestRoutes = require("./routes/MockTestRoute");
+const adminMockTestRoutes = require("./routes/AdminMockTestRoute");
 // const practiceTestRoutes = require("./routes/practiceTestRoutes");
 
 app.use("/api/auth/email", authEmailRoutes);
@@ -435,6 +447,10 @@ app.use("/api/responses", responseRoutes);
 app.use("/api/upload", uploadRoute);
 app.use("/api/study-materials", require("./routes/StudyMaterialRoute"));
 app.use("/api/announcements", require("./routes/AnnouncementRoute"));
+app.use("/api/discussions", discussionRoutes);
+app.use("/api/admin/discussions", adminDiscussionRoutes);
+app.use("/api/mock-tests", mockTestRoutes);
+app.use("/api/admin/mock-tests", adminMockTestRoutes);
 app.use("/api/sample", require("./routes/sampleData"));
 // app.use("/api/practice-tests", practiceTestRoutes);
 

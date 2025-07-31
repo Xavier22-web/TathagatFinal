@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": "https://tathagat.satyaka.in",
-  "proxy": "http://localhost:5001",
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@builder.io/react": "^8.2.6",
     "@fortawesome/fontawesome-free": "^6.7.2",
