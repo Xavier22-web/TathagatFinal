@@ -82,6 +82,13 @@ const StudentDashboard = () => {
   });
   const [downloading, setDownloading] = useState(null);
 
+  // Announcements state
+  const [announcements, setAnnouncements] = useState([]);
+  const [announcementsLoading, setAnnouncementsLoading] = useState(false);
+  const [announcementFilters, setAnnouncementFilters] = useState({
+    type: 'all'
+  });
+
   // Load user data from localStorage
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
