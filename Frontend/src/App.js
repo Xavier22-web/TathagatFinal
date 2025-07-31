@@ -234,6 +234,15 @@ const AppContent = () => {
           }
         />
 
+        <Route
+          path="/admin/discussions"
+          element={
+            <PrivateRoute tokenName="adminToken">
+              <DiscussionManagement />
+            </PrivateRoute>
+          }
+        />
+
         {/* SubAdmin routes */}
         <Route path="/subadmin" element={<SubAdminLogin />} />
         <Route
