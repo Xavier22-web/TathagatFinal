@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlus, FaEdit, FaTrash, FaEye, FaBullhorn, FaFilter, FaSearch, FaPushpin, FaUsers, FaExclamationTriangle } from 'react-icons/fa';
+import { FaPlus, FaEdit, FaTrash, FaEye, FaBullhorn, FaFilter, FaSearch, FaThumbtack, FaUsers, FaExclamationTriangle } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import './Announcements.css';
 
