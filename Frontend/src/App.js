@@ -70,6 +70,7 @@ import CourseStructure from "./pages/mainAdmin/CourseTreeView/CourseStructure";
 import PracticeTestManagement from "./pages/mainAdmin/PracticeTestManagement/PracticeTestManagement";
 import StudyMaterials from "./pages/mainAdmin/StudyMaterials/StudyMaterials";
 import Announcements from "./pages/mainAdmin/Announcements/Announcements";
+import DiscussionManagement from "./pages/mainAdmin/DiscussionManagement/DiscussionManagement";
 import StudentPracticeTests from "./pages/Student/PracticeTests/StudentPracticeTests";
 import TestInstructions from "./pages/Student/PracticeTests/TestInstructions";
 import SuccessStory from "./pages/SuccessStory/SuccessStory";
