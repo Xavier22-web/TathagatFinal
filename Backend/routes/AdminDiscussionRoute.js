@@ -12,13 +12,13 @@ const {
 const { adminAuth } = require('../middleware/authMiddleware');
 
 // Admin routes for discussion moderation
-router.get('/discussions', authMiddleware, getAllDiscussions);
-router.get('/discussions/stats', authMiddleware, getDiscussionStats);
-router.put('/discussions/:id/moderate', authMiddleware, moderateDiscussion);
-router.delete('/discussions/:id', authMiddleware, deleteDiscussion);
+router.get('/discussions', adminAuth, getAllDiscussions);
+router.get('/discussions/stats', adminAuth, getDiscussionStats);
+router.put('/discussions/:id/moderate', adminAuth, moderateDiscussion);
+router.delete('/discussions/:id', adminAuth, deleteDiscussion);
 
-router.get('/replies', authMiddleware, getAllReplies);
-router.put('/replies/:id/moderate', authMiddleware, moderateReply);
-router.delete('/replies/:id', authMiddleware, deleteReply);
+router.get('/replies', adminAuth, getAllReplies);
+router.put('/replies/:id/moderate', adminAuth, moderateReply);
+router.delete('/replies/:id', adminAuth, deleteReply);
 
 module.exports = router;
