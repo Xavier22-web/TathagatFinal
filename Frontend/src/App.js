@@ -71,6 +71,7 @@ import PracticeTestManagement from "./pages/mainAdmin/PracticeTestManagement/Pra
 import StudyMaterials from "./pages/mainAdmin/StudyMaterials/StudyMaterials";
 import Announcements from "./pages/mainAdmin/Announcements/Announcements";
 import DiscussionManagement from "./pages/mainAdmin/DiscussionManagement/DiscussionManagement";
+import MockTestManagement from "./pages/mainAdmin/MockTestManagement/MockTestManagement";
 import StudentPracticeTests from "./pages/Student/PracticeTests/StudentPracticeTests";
 import TestInstructions from "./pages/Student/PracticeTests/TestInstructions";
 import SuccessStory from "./pages/SuccessStory/SuccessStory";
