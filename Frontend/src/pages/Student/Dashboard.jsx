@@ -884,50 +884,7 @@ const loadMyCourses = async () => {
     </div>
   );
 
-  const renderMockTestsContent = () => (
-    <div className="mock-tests-content">
-      <div className="section-header">
-        <h2>Mock Tests</h2>
-        <button className="primary-btn">Take New Mock</button>
-      </div>
-
-      <div className="mock-test-banner">
-        <div className="banner-content">
-          <h3>🎯 CAT Mock Test Series 2024</h3>
-          <p>Attempt comprehensive mock tests designed as per latest CAT pattern</p>
-          <button className="banner-cta">Start Mock Test</button>
-        </div>
-      </div>
-
-      <div className="mock-test-history">
-        <h3>Test History</h3>
-        <div className="history-table">
-          <div className="table-header">
-            <span>Test Name</span>
-            <span>Date</span>
-            <span>Score</span>
-            <span>Percentile</span>
-            <span>Action</span>
-          </div>
-          {[
-            { name: 'CAT Mock 1', date: '2024-01-15', score: '145/300', percentile: '78.5' },
-            { name: 'CAT Mock 2', date: '2024-01-20', score: '160/300', percentile: '82.3' },
-            { name: 'CAT Mock 3', date: '2024-01-25', score: '155/300', percentile: '80.1' }
-          ].map((test, index) => (
-            <div key={index} className="table-row">
-              <span>{test.name}</span>
-              <span>{test.date}</span>
-              <span>{test.score}</span>
-              <span>{test.percentile}%</span>
-              <button className="view-btn">
-                <FiEye /> View Report
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  const renderMockTestsContent = () => <MockTestPage />;
 
   const renderAnalysisContent = () => (
     <div className="analysis-content">
