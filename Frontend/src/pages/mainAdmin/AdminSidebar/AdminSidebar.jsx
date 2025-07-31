@@ -27,6 +27,9 @@ const AdminSidebar = () => {
         <NavLink to="/admin/practice-tests" className="admin-link">
           <FaClipboardList className="admin-icon" /> Practice Tests
         </NavLink>
+        <NavLink to="/admin/mock-tests" className="admin-link">
+          <FaGraduationCap className="admin-icon" /> Mock Tests
+        </NavLink>
         <NavLink to="/admin/study-materials" className="admin-link">
           <FaFileAlt className="admin-icon" /> Study Materials
         </NavLink>
