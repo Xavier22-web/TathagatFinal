@@ -45,7 +45,8 @@ const allowedOrigins = [
   "http://localhost:3001" ,
    "http://127.0.0.1:3000",              // Local dev
   "https://tathagat.satyaka.in",            // Production domain
-  "https://602013ebf633402e8096c9cab19561d7-38235a13d63b4a5991fa93f6f.fly.dev"  // Current deployment
+  "https://602013ebf633402e8096c9cab19561d7-38235a13d63b4a5991fa93f6f.fly.dev",  // Previous deployment
+  "https://56e17d465c834696b5b3654be57883bc-f85b5f4c5dc640488369d7da4.fly.dev"  // Current frontend deployment
 ];
 
 app.use(cors({
