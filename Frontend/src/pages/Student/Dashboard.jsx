@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 import { fetchPublishedCourses } from '../../utils/api';
+import DiscussionForum from '../../components/DiscussionForum/DiscussionForum';
 import {
   FiHome,
   FiBook,
@@ -306,7 +307,7 @@ const loadMyCourses = async () => {
           setStudyMaterials([]);
         }
       } else {
-        console.error('❌ Study materials API error:', response.status);
+        console.error('��� Study materials API error:', response.status);
         setStudyMaterials([]);
       }
     } catch (error) {
