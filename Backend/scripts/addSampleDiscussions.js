@@ -123,9 +123,13 @@ const addSampleDiscussions = async () => {
   try {
     console.log('🚀 Starting to add sample discussions...');
 
-    // Connect to database
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ Connected to MongoDB');
+    // Connect to database only if not already connected
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(process.env.MONGO_URI);
+      console.log('✅ Connected to MongoDB');
+    } else {
+      console.log('✅ Using existing MongoDB connection');
+    }
 
     // Check if discussions already exist
     const existingDiscussions = await Discussion.countDocuments();
