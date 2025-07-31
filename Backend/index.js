@@ -249,6 +249,8 @@ const addSampleStudyMaterials = async () => {
 // Call the function after DB connection
 setTimeout(addSampleStudyMaterials, 3000);
 
+// Restart trigger
+
 // ======================= Development Mock Data ========================================
 // if (process.env.NODE_ENV !== 'production') {
 //     // Removed duplicate route - using real controller from CourseRoute.js
