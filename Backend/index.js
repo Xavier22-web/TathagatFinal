@@ -445,6 +445,8 @@ app.use("/api/study-materials", require("./routes/StudyMaterialRoute"));
 app.use("/api/announcements", require("./routes/AnnouncementRoute"));
 app.use("/api/discussions", discussionRoutes);
 app.use("/api/admin/discussions", adminDiscussionRoutes);
+app.use("/api/mock-tests", mockTestRoutes);
+app.use("/api/admin/mock-tests", adminMockTestRoutes);
 app.use("/api/sample", require("./routes/sampleData"));
 // app.use("/api/practice-tests", practiceTestRoutes);
 
